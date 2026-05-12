@@ -1,0 +1,17 @@
+{
+  "name": "forge",
+  "private": true,
+  "packageManager": "npm@10.9.3",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test:flow": "npx tsx demo/test-flow.ts"
+  },
+  "devDependencies": {
+    "turbo": "latest",
+    "typescript": "latest"
+  }
+}
