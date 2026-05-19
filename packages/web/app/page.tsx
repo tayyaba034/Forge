@@ -11,6 +11,9 @@ export default function Home() {
   const [sceneState, setSceneState] = useState<SceneState | null>(null);
   const [lastTool, setLastTool] = useState<string | null>(null);
   const [connectionError, setConnectionError] = useState<string | null>(null);
+  const [activeModel, setActiveModel] = useState('gemini-2.0-flash');
+  const [statusMessage, setStatusMessage] = useState('Idle');
+  const [tokenTotal, setTokenTotal] = useState(0);
 
   const connectToRelay = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,8 +99,20 @@ export default function Home() {
             relayUrl={relayUrl}
             onSceneStateUpdate={setSceneState}
             onToolActivity={setLastTool}
+            onStatusChange={(status, model) => {
+              setStatusMessage(status);
+              if (model) setActiveModel(model);
+            }}
+            onTokenDelta={(_input, _output, total) => setTokenTotal((prev) => prev + total)}
           />
-          <StatusBar connected={connected} relayUrl={relayUrl} lastTool={lastTool} />
+          <StatusBar
+            connected={connected}
+            relayUrl={relayUrl}
+            activeModel={activeModel}
+            lastTool={lastTool}
+            statusMessage={statusMessage}
+            tokenTotal={tokenTotal}
+          />
         </section>
       </div>
     </main>
