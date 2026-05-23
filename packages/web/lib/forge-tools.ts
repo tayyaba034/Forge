@@ -23,6 +23,115 @@ export const FORGE_TOOLS: FunctionDeclaration[] = [
     },
   },
   {
+    name: 'create_gameobject',
+    description:
+      'Creates a new GameObject in the active Unity scene. Use this when the user wants a new object built from scratch.',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {
+        name: {
+          type: SchemaType.STRING,
+          description: 'GameObject name, such as Player or EnemySpawner',
+        },
+        parentPath: {
+          type: SchemaType.STRING,
+          description: 'Optional parent path, e.g. World/Enemies',
+        },
+        primitiveType: {
+          type: SchemaType.STRING,
+          description: 'Optional primitive type like Cube, Sphere, Capsule, or Empty',
+        },
+        position: {
+          type: SchemaType.OBJECT,
+          properties: {
+            x: { type: SchemaType.NUMBER },
+            y: { type: SchemaType.NUMBER },
+            z: { type: SchemaType.NUMBER },
+          },
+        },
+        active: { type: SchemaType.BOOLEAN },
+      },
+      required: ['name'],
+    },
+  },
+  {
+    name: 'delete_gameobject',
+    description: 'Deletes a GameObject from the active Unity scene.',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {
+        gameObjectPath: { type: SchemaType.STRING },
+      },
+      required: ['gameObjectPath'],
+    },
+  },
+  {
+    name: 'duplicate_gameobject',
+    description: 'Duplicates a GameObject in the active Unity scene.',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {
+        gameObjectPath: { type: SchemaType.STRING },
+        name: { type: SchemaType.STRING },
+        parentPath: { type: SchemaType.STRING },
+        position: {
+          type: SchemaType.OBJECT,
+          properties: {
+            x: { type: SchemaType.NUMBER },
+            y: { type: SchemaType.NUMBER },
+            z: { type: SchemaType.NUMBER },
+          },
+        },
+      },
+      required: ['gameObjectPath'],
+    },
+  },
+  {
+    name: 'rename_gameobject',
+    description: 'Renames a GameObject in the active Unity scene.',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {
+        gameObjectPath: { type: SchemaType.STRING },
+        name: { type: SchemaType.STRING },
+      },
+      required: ['gameObjectPath', 'name'],
+    },
+  },
+  {
+    name: 'save_as_prefab',
+    description: 'Saves a GameObject as a prefab asset.',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {
+        gameObjectPath: { type: SchemaType.STRING },
+        assetPath: { type: SchemaType.STRING },
+      },
+      required: ['gameObjectPath', 'assetPath'],
+    },
+  },
+  {
+    name: 'instantiate_prefab',
+    description: 'Instantiates a prefab asset into the active Unity scene.',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {
+        assetPath: { type: SchemaType.STRING },
+        name: { type: SchemaType.STRING },
+        parentPath: { type: SchemaType.STRING },
+        position: {
+          type: SchemaType.OBJECT,
+          properties: {
+            x: { type: SchemaType.NUMBER },
+            y: { type: SchemaType.NUMBER },
+            z: { type: SchemaType.NUMBER },
+          },
+        },
+      },
+      required: ['assetPath'],
+    },
+  },
+  {
     name: 'create_script',
     description:
       'Creates a new C# MonoBehaviour script and triggers compilation. Returns compile errors if any.',

@@ -1,8 +1,8 @@
-# FORGE
+# FORGE - Unity Coding Agent
 
 FORGE is a Unity coding agent built for the Next Byte Hacks V2 spec. It connects a Next.js chat UI to a live Unity Editor through a local WebSocket relay, then uses Gemini 2.0 Flash function calling to inspect scenes, create and edit C# scripts, attach/configure components, and automatically check Unity compile status.
 
-FORGE can run from the browser web app or from the Unity Editor chat window.
+FORGE can run from the browser web app or from the Unity Editor chat window. This repo also includes a ready-to-open demo Unity project so the full loop can be tested without creating a project from scratch.
 
 ## Features
 
@@ -17,13 +17,15 @@ FORGE can run from the browser web app or from the Unity Editor chat window.
 - Session replay saved in `localStorage`, with a History panel for reviewing past runs.
 - Running Gemini token counter in the status bar.
 - Ollama fallback when Gemini fails due to quota, network, or API errors.
+- Sample Unity project under `demo/sample-unity-project` with the bridge already installed.
 
 ## Repository Layout
 
 - `packages/web`: Next.js App Router app with chat UI, `/api/agent` SSE route, `/api/tools`, Tailwind, plan approval, diff viewer, status bar, history replay, and voice input.
 - `packages/relay`: Express + `ws` relay on `http://localhost:9902`, forwarding tool calls to Unity at `ws://localhost:9901/forge/`.
 - `packages/bridge`: Unity C# Editor bridge with WebSocket server, tool dispatcher, script/object operations, and `Window > FORGE Chat`.
-- `demo/test-flow.ts`: smoke test for the “Add a health system to Player” flow.
+- `demo/test-flow.ts`: smoke test for the "Add a health system to Player" flow.
+- `demo/sample-unity-project`: demo Unity project with `Assets/FORGE/Editor` already copied in.
 
 ## Requirements
 
@@ -67,7 +69,27 @@ If using Ollama:
 ollama pull llama3.1:8b
 ```
 
-## Unity Setup
+## Option A: Use the Demo Unity Project
+
+Open this folder from Unity Hub:
+
+```text
+D:\FORGE\demo\sample-unity-project
+```
+
+The demo project already includes the FORGE editor bridge at:
+
+```text
+Assets/FORGE/Editor
+```
+
+After Unity finishes importing:
+
+1. Open `Window > FORGE Bridge`.
+2. Confirm the bridge is listening on `ws://localhost:9901/forge/`.
+3. Start the relay and web app from the repo root.
+
+## Option B: Add FORGE to an Existing Unity Project
 
 Import `packages/bridge` into your Unity project, or copy its `Editor` folder into:
 
@@ -157,6 +179,25 @@ Custom relay URL:
 
 ```powershell
 $env:FORGE_RELAY_URL="http://localhost:9902"; npm run test:flow
+```
+
+## Common Scripts
+
+From the repo root:
+
+```bash
+npm run dev
+npm run build
+npm run test:flow
+```
+
+Package-specific commands:
+
+```bash
+npm run dev --workspace packages/relay
+npm run dev --workspace packages/web
+npm run lint --workspace packages/web
+npx tsc --noEmit --workspace packages/web
 ```
 
 ## Verification

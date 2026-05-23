@@ -383,15 +383,5 @@ async function runOllamaAgent(messages: AgentMessage[], relayUrl: string, send: 
 }
 
 export async function runAgent(messages: AgentMessage[], relayUrl: string, send: SendEvent) {
-  try {
-    await runGeminiAgent(messages, relayUrl, send);
-  } catch (geminiError: unknown) {
-    try {
-      await runOllamaAgent(messages, relayUrl, send);
-    } catch (ollamaError: unknown) {
-      const geminiMessage = geminiError instanceof Error ? geminiError.message : String(geminiError);
-      const ollamaMessage = ollamaError instanceof Error ? ollamaError.message : String(ollamaError);
-      throw new Error(`Gemini failed: ${geminiMessage}\n\nOllama failed: ${ollamaMessage}`);
-    }
-  }
+  await runOllamaAgent(messages, relayUrl, send);
 }
